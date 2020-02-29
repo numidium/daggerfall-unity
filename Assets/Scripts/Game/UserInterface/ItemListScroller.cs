@@ -126,6 +126,9 @@ namespace DaggerfallWorkshop.Game.UserInterface
         public delegate void OnItemClickHandler(DaggerfallUnityItem item);
         public event OnItemClickHandler OnItemClick;
 
+        public delegate void OnItemRightClickHandler(DaggerfallUnityItem item);
+        public event OnItemRightClickHandler OnItemRightClick;
+
         public delegate void OnItemHoverHandler(DaggerfallUnityItem item);
         public event OnItemHoverHandler OnItemHover;
 
@@ -337,6 +340,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
                 itemButtons[i].ToolTip = toolTip;
                 itemButtons[i].Tag = i;
                 itemButtons[i].OnMouseClick += ItemButton_OnMouseClick;
+                itemButtons[i].OnRightMouseClick += ItemButton_OnRightMouseClick;
                 itemButtons[i].OnMouseEnter += ItemButton_OnMouseEnter;
                 itemButtons[i].OnMouseScrollUp += ItemButton_OnMouseEnter;
                 itemButtons[i].OnMouseScrollDown += ItemButton_OnMouseEnter;
@@ -525,7 +529,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
 
         #region Event handlers
 
-        void ItemButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
+        void ItemButton_OnClick(BaseScreenComponent sender, Vector2 position, bool rightClick)
         {
             // Get index
             int index = (GetScrollIndex() * listWidth) + (int)sender.Tag;
@@ -534,10 +538,23 @@ namespace DaggerfallWorkshop.Game.UserInterface
 
             // Get item and raise item click event
             DaggerfallUnityItem item = items[index];
-            if (item != null && OnItemClick != null)
+
+            if (!rightClick && item != null && OnItemClick != null)
                 OnItemClick(item);
+            else if (item != null && OnItemRightClick != null)
+                OnItemRightClick(item);
 
             ItemButton_OnMouseEnter(sender);
+        }
+
+        void ItemButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
+        {
+            ItemButton_OnClick(sender, position, false);
+        }
+
+        void ItemButton_OnRightMouseClick(BaseScreenComponent sender, Vector2 position)
+        {
+            ItemButton_OnClick(sender, position, true);
         }
 
         void ItemButton_OnMouseEnter(BaseScreenComponent sender)
