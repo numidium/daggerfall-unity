@@ -101,7 +101,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
         int miscLabelOffsetDist = 0;// Vertical distance to offset the misc label
         int miscLabelOffsetIdx = 0; //Index of column for which to offset the misc label
 
-        float foregroundAnimationDelay = 0.2f;
+        float foregroundAnimationDelay = 0.2f;    
         float backgroundAnimationDelay = 0.2f;
 
         List<DaggerfallUnityItem> items = new List<DaggerfallUnityItem>();
@@ -173,8 +173,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
         public List<DaggerfallUnityItem> Items
         {
             get { return items; }
-            set
-            {
+            set {
                 items = value;
                 UpdateItemsDisplay(true);
             }
@@ -254,8 +253,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
             this.miscLabelOffsetIdx = miscLabelOffsetIdx;
 
             LoadTextures(false);
-            if (scroller)
-            {
+            if (scroller) {
                 SetupScrollBar();
                 SetupScrollButtons();
             }
@@ -329,8 +327,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
             for (int i = 0; i < listDisplayTotal; i++)
             {
                 // Panel - for backing button in enhanced mode
-                if (enhanced)
-                {
+                if (enhanced) {
                     Panel buttonPanel = DaggerfallUI.AddPanel(itemButtonRects[i], itemsListPanel);
                     buttonPanel.BackgroundTexture = itemListTextures[i];
                 }
@@ -444,13 +441,11 @@ namespace DaggerfallWorkshop.Game.UserInterface
                 // Handle context specific background colour, animations & label
                 if (backgroundColourHandler != null)
                     itemButtons[i].BackgroundColor = backgroundColourHandler(item);
-                if (backgroundAnimationHandler != null)
-                {
+                if (backgroundAnimationHandler != null) {
                     itemButtons[i].AnimationDelayInSeconds = backgroundAnimationDelay;
                     itemButtons[i].AnimatedBackgroundTextures = backgroundAnimationHandler(item);
                 }
-                if (foregroundAnimationHandler != null)
-                {
+                if (foregroundAnimationHandler != null) {
                     itemAnimPanels[i].AnimationDelayInSeconds = foregroundAnimationDelay;
                     itemAnimPanels[i].AnimatedBackgroundTextures = foregroundAnimationHandler(item);
                 }
@@ -540,9 +535,9 @@ namespace DaggerfallWorkshop.Game.UserInterface
             DaggerfallUnityItem item = items[index];
 
             if (!rightClick && item != null && OnItemClick != null)
-                OnItemClick(item);
+                    OnItemClick(item);
             else if (item != null && OnItemRightClick != null)
-                OnItemRightClick(item);
+                    OnItemRightClick(item);
 
             ItemButton_OnMouseEnter(sender);
         }
