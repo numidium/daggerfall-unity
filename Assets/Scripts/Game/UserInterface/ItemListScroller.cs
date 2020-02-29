@@ -4,6 +4,7 @@
 // License:         MIT License (http://www.opensource.org/licenses/mit-license.php)
 // Source Code:     https://github.com/Interkarma/daggerfall-unity
 // Original Author: Hazelnut
+// Contributors: Numidium
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -547,7 +548,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
             ItemButton_OnClick(sender, position, false);
         }
 
-        void ItemButton_OnRightMouseClick(BaseScreenComponent sender, Vector2 position)
+        protected void ItemButton_OnRightMouseClick(BaseScreenComponent sender, Vector2 position)
         {
             ItemButton_OnClick(sender, position, true);
         }
