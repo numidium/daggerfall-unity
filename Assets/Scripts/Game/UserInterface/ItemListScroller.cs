@@ -21,27 +21,27 @@ namespace DaggerfallWorkshop.Game.UserInterface
     {
         #region UI Rects, Controls, Textures
 
-        Rect itemListPanelRect = new Rect(9, 0, 50, 152);
-        Rect[] itemButtonRects = itemButtonRects4;
+        protected Rect itemListPanelRect = new Rect(9, 0, 50, 152);
+        protected Rect[] itemButtonRects = itemButtonRects4;
 
-        Rect upArrowRect = new Rect(0, 0, 9, 16);
-        Rect downArrowRect = new Rect(0, 136, 9, 16);
-        DFSize arrowsFullSize = new DFSize(9, 152);
+        protected Rect upArrowRect = new Rect(0, 0, 9, 16);
+        protected Rect downArrowRect = new Rect(0, 136, 9, 16);
+        protected DFSize arrowsFullSize = new DFSize(9, 152);
 
-        Texture2D redUpArrow;
-        Texture2D greenUpArrow;
-        Texture2D redDownArrow;
-        Texture2D greenDownArrow;
+        protected Texture2D redUpArrow;
+        protected Texture2D greenUpArrow;
+        protected Texture2D redDownArrow;
+        protected Texture2D greenDownArrow;
 
-        Button itemListUpButton;
-        Button itemListDownButton;
-        VerticalScrollBar itemListScrollBar;
+        protected Button itemListUpButton;
+        protected Button itemListDownButton;
+        protected VerticalScrollBar itemListScrollBar;
 
-        Button[] itemButtons;
-        Panel[] itemIconPanels;
-        Panel[] itemAnimPanels;
-        TextLabel[] itemStackLabels;
-        TextLabel[] itemMiscLabels;
+        protected Button[] itemButtons;
+        protected Panel[] itemIconPanels;
+        protected Panel[] itemAnimPanels;
+        protected TextLabel[] itemStackLabels;
+        protected TextLabel[] itemMiscLabels;
 
         #endregion
 
@@ -520,7 +520,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
 
         #region Event handlers
 
-        void ItemButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
+        protected void ItemButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
         {
             // Get index
             int index = (GetScrollIndex() * listWidth) + (int)sender.Tag;
@@ -535,7 +535,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
             ItemButton_OnMouseEnter(sender);
         }
 
-        void ItemButton_OnMouseEnter(BaseScreenComponent sender)
+        protected void ItemButton_OnMouseEnter(BaseScreenComponent sender)
         {
             // Get index
             int index = (GetScrollIndex() * listWidth) + (int)sender.Tag;
@@ -548,12 +548,12 @@ namespace DaggerfallWorkshop.Game.UserInterface
                 OnItemHover(item);
         }
 
-        void ItemsScrollBar_OnScroll()
+        protected void ItemsScrollBar_OnScroll()
         {
             UpdateItemsDisplay(false);
         }
 
-        void ItemsUpButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
+        protected void ItemsUpButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
         {
             if (scroller)
             {
@@ -562,7 +562,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
             }
         }
 
-        void ItemsDownButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
+        protected void ItemsDownButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
         {
             if (scroller)
             {
@@ -571,19 +571,19 @@ namespace DaggerfallWorkshop.Game.UserInterface
             }
         }
 
-        void ItemsListPanel_OnMouseScrollUp(BaseScreenComponent sender)
+        protected void ItemsListPanel_OnMouseScrollUp(BaseScreenComponent sender)
         {
             if (scroller)
                 itemListScrollBar.ScrollIndex--;
         }
 
-        void ItemsListPanel_OnMouseScrollDown(BaseScreenComponent sender)
+        protected void ItemsListPanel_OnMouseScrollDown(BaseScreenComponent sender)
         {
             if (scroller)
                 itemListScrollBar.ScrollIndex++;
         }
 
-        void ItemsListPanel_OnMouseLeave(BaseScreenComponent sender)
+        protected void ItemsListPanel_OnMouseLeave(BaseScreenComponent sender)
         {
             UpdateItemsDisplay(false);
         }
