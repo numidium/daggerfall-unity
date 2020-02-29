@@ -4,7 +4,6 @@
 // License:         MIT License (http://www.opensource.org/licenses/mit-license.php)
 // Source Code:     https://github.com/Interkarma/daggerfall-unity
 // Original Author: Hazelnut
-// Contributors: Numidium
 
 using UnityEngine;
 using System.Collections.Generic;
@@ -22,27 +21,27 @@ namespace DaggerfallWorkshop.Game.UserInterface
     {
         #region UI Rects, Controls, Textures
 
-        protected Rect itemListPanelRect = new Rect(9, 0, 50, 152);
-        protected Rect[] itemButtonRects = itemButtonRects4;
+        Rect itemListPanelRect = new Rect(9, 0, 50, 152);
+        Rect[] itemButtonRects = itemButtonRects4;
 
-        protected Rect upArrowRect = new Rect(0, 0, 9, 16);
-        protected Rect downArrowRect = new Rect(0, 136, 9, 16);
-        protected DFSize arrowsFullSize = new DFSize(9, 152);
+        Rect upArrowRect = new Rect(0, 0, 9, 16);
+        Rect downArrowRect = new Rect(0, 136, 9, 16);
+        DFSize arrowsFullSize = new DFSize(9, 152);
 
-        protected Texture2D redUpArrow;
-        protected Texture2D greenUpArrow;
-        protected Texture2D redDownArrow;
-        protected Texture2D greenDownArrow;
+        Texture2D redUpArrow;
+        Texture2D greenUpArrow;
+        Texture2D redDownArrow;
+        Texture2D greenDownArrow;
 
-        protected Button itemListUpButton;
-        protected Button itemListDownButton;
-        protected VerticalScrollBar itemListScrollBar;
+        Button itemListUpButton;
+        Button itemListDownButton;
+        VerticalScrollBar itemListScrollBar;
 
-        protected Button[] itemButtons;
-        protected Panel[] itemIconPanels;
-        protected Panel[] itemAnimPanels;
-        protected TextLabel[] itemStackLabels;
-        protected TextLabel[] itemMiscLabels;
+        Button[] itemButtons;
+        Panel[] itemIconPanels;
+        Panel[] itemAnimPanels;
+        TextLabel[] itemStackLabels;
+        TextLabel[] itemMiscLabels;
 
         #endregion
 
@@ -102,7 +101,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
         int miscLabelOffsetDist = 0;// Vertical distance to offset the misc label
         int miscLabelOffsetIdx = 0; //Index of column for which to offset the misc label
 
-        float foregroundAnimationDelay = 0.2f;    
+        float foregroundAnimationDelay = 0.2f;
         float backgroundAnimationDelay = 0.2f;
 
         List<DaggerfallUnityItem> items = new List<DaggerfallUnityItem>();
@@ -126,9 +125,6 @@ namespace DaggerfallWorkshop.Game.UserInterface
 
         public delegate void OnItemClickHandler(DaggerfallUnityItem item);
         public event OnItemClickHandler OnItemClick;
-
-        public delegate void OnItemRightClickHandler(DaggerfallUnityItem item);
-        public event OnItemRightClickHandler OnItemRightClick;
 
         public delegate void OnItemHoverHandler(DaggerfallUnityItem item);
         public event OnItemHoverHandler OnItemHover;
@@ -174,7 +170,8 @@ namespace DaggerfallWorkshop.Game.UserInterface
         public List<DaggerfallUnityItem> Items
         {
             get { return items; }
-            set {
+            set
+            {
                 items = value;
                 UpdateItemsDisplay(true);
             }
@@ -254,7 +251,8 @@ namespace DaggerfallWorkshop.Game.UserInterface
             this.miscLabelOffsetIdx = miscLabelOffsetIdx;
 
             LoadTextures(false);
-            if (scroller) {
+            if (scroller)
+            {
                 SetupScrollBar();
                 SetupScrollButtons();
             }
@@ -328,7 +326,8 @@ namespace DaggerfallWorkshop.Game.UserInterface
             for (int i = 0; i < listDisplayTotal; i++)
             {
                 // Panel - for backing button in enhanced mode
-                if (enhanced) {
+                if (enhanced)
+                {
                     Panel buttonPanel = DaggerfallUI.AddPanel(itemButtonRects[i], itemsListPanel);
                     buttonPanel.BackgroundTexture = itemListTextures[i];
                 }
@@ -338,7 +337,6 @@ namespace DaggerfallWorkshop.Game.UserInterface
                 itemButtons[i].ToolTip = toolTip;
                 itemButtons[i].Tag = i;
                 itemButtons[i].OnMouseClick += ItemButton_OnMouseClick;
-                itemButtons[i].OnRightMouseClick += ItemButton_OnRightMouseClick;
                 itemButtons[i].OnMouseEnter += ItemButton_OnMouseEnter;
                 itemButtons[i].OnMouseScrollUp += ItemButton_OnMouseEnter;
                 itemButtons[i].OnMouseScrollDown += ItemButton_OnMouseEnter;
@@ -442,11 +440,13 @@ namespace DaggerfallWorkshop.Game.UserInterface
                 // Handle context specific background colour, animations & label
                 if (backgroundColourHandler != null)
                     itemButtons[i].BackgroundColor = backgroundColourHandler(item);
-                if (backgroundAnimationHandler != null) {
+                if (backgroundAnimationHandler != null)
+                {
                     itemButtons[i].AnimationDelayInSeconds = backgroundAnimationDelay;
                     itemButtons[i].AnimatedBackgroundTextures = backgroundAnimationHandler(item);
                 }
-                if (foregroundAnimationHandler != null) {
+                if (foregroundAnimationHandler != null)
+                {
                     itemAnimPanels[i].AnimationDelayInSeconds = foregroundAnimationDelay;
                     itemAnimPanels[i].AnimatedBackgroundTextures = foregroundAnimationHandler(item);
                 }
@@ -525,7 +525,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
 
         #region Event handlers
 
-        protected void ItemButton_OnClick(BaseScreenComponent sender, Vector2 position, bool rightClick)
+        void ItemButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
         {
             // Get index
             int index = (GetScrollIndex() * listWidth) + (int)sender.Tag;
@@ -534,26 +534,13 @@ namespace DaggerfallWorkshop.Game.UserInterface
 
             // Get item and raise item click event
             DaggerfallUnityItem item = items[index];
-
-            if (!rightClick && item != null && OnItemClick != null)
-                    OnItemClick(item);
-            else if (item != null && OnItemRightClick != null)
-                    OnItemRightClick(item);
+            if (item != null && OnItemClick != null)
+                OnItemClick(item);
 
             ItemButton_OnMouseEnter(sender);
         }
 
-        protected void ItemButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
-        {
-            ItemButton_OnClick(sender, position, false);
-        }
-
-        protected void ItemButton_OnRightMouseClick(BaseScreenComponent sender, Vector2 position)
-        {
-            ItemButton_OnClick(sender, position, true);
-        }
-
-        protected void ItemButton_OnMouseEnter(BaseScreenComponent sender)
+        void ItemButton_OnMouseEnter(BaseScreenComponent sender)
         {
             // Get index
             int index = (GetScrollIndex() * listWidth) + (int)sender.Tag;
@@ -566,12 +553,12 @@ namespace DaggerfallWorkshop.Game.UserInterface
                 OnItemHover(item);
         }
 
-        protected void ItemsScrollBar_OnScroll()
+        void ItemsScrollBar_OnScroll()
         {
             UpdateItemsDisplay(false);
         }
 
-        protected void ItemsUpButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
+        void ItemsUpButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
         {
             if (scroller)
             {
@@ -580,7 +567,7 @@ namespace DaggerfallWorkshop.Game.UserInterface
             }
         }
 
-        protected void ItemsDownButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
+        void ItemsDownButton_OnMouseClick(BaseScreenComponent sender, Vector2 position)
         {
             if (scroller)
             {
@@ -589,19 +576,19 @@ namespace DaggerfallWorkshop.Game.UserInterface
             }
         }
 
-        protected void ItemsListPanel_OnMouseScrollUp(BaseScreenComponent sender)
+        void ItemsListPanel_OnMouseScrollUp(BaseScreenComponent sender)
         {
             if (scroller)
                 itemListScrollBar.ScrollIndex--;
         }
 
-        protected void ItemsListPanel_OnMouseScrollDown(BaseScreenComponent sender)
+        void ItemsListPanel_OnMouseScrollDown(BaseScreenComponent sender)
         {
             if (scroller)
                 itemListScrollBar.ScrollIndex++;
         }
 
-        protected void ItemsListPanel_OnMouseLeave(BaseScreenComponent sender)
+        void ItemsListPanel_OnMouseLeave(BaseScreenComponent sender)
         {
             UpdateItemsDisplay(false);
         }
